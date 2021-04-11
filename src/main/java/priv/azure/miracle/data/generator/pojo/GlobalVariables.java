@@ -9,7 +9,7 @@ public class GlobalVariables{
 	private String endDateTime;
 	private LocalDateTime dateTimeEnd;
 	private String columnValueCycle;
-	private String selfIncreamentColumn;
+	private String idColumn;
 	private Double minNumber;
 	private Double maxNumber;
 	private String textsDirectory;
@@ -76,10 +76,10 @@ public class GlobalVariables{
 	public void setColumnValueCycle(String columnValueCycle) {
 		this.columnValueCycle = columnValueCycle;
 	}
-	public String getSelfIncreamentColumn() {
-		return selfIncreamentColumn;
+	public String getIdColumn() {
+		return idColumn;
 	}
-	public void setSelfIncreamentColumn(String selfIncreamentColumn) {
-		this.selfIncreamentColumn = selfIncreamentColumn;
+	public void setIdColumn(String idColumn) {
+		this.idColumn = idColumn;
 	}
 }

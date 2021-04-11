@@ -185,21 +185,21 @@ public class RecordCreatingTask implements Runnable{
 		String minNumberStr = MapOperator.safetyGet(properties, Key.MIN_VALUE, "0.0");
 		String maxNumberStr = MapOperator.safetyGet(properties, Key.MAX_VALUE, "0.0");
 		String value = null;
-		if(global.getSelfIncreamentColumn() != null && name.equals(global.getSelfIncreamentColumn()))
-			value = innerSelfIncreamentColumnValue();
+		if(global.getIdColumn() != null && name.equals(global.getIdColumn()))
+			value = idColumnHandling();
 		else
 			value = innerCommonCreateNumberColumnValue(properties, Double.valueOf(minNumberStr), Double.valueOf(maxNumberStr));
 		return new Column(name, value);
 	}
 	/**
-	 * 带有"自增型"设置的数值字段内部处理
+	 * id型字段处理
 	 * @return
 	 */
-	private String innerSelfIncreamentColumnValue() {
-		return String.valueOf(status.addSelfIncrementAndGet());
+	private String idColumnHandling() {
+		return String.valueOf(status.addIdColumnValueAndGet());
 	}
 	/**
-	 * 非自增型数值字段内部处理
+	 * 普通数值字段内部处理
 	 * @param properties
 	 * @param min
 	 * @param max

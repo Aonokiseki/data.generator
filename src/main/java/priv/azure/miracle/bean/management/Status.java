@@ -32,7 +32,7 @@ public class Status {
 	/* 循环生成日期时(single.cycle.generate=true), 记录全局生成的最后一个日期 */
 	private LocalDateTime theLastDateTimeGenerated;
 	/* 自增字段的值 */
-	private AtomicLong selfIncreament;
+	private AtomicLong idColumnValue;
 	/* Map, 记录所有错误 */
 	private Map<String,String> errors;
 	/* 检查模板和配置文件, 并初始化以后, 是否允许真正生成记录 */
@@ -43,7 +43,7 @@ public class Status {
 		recordsCreatingCount = new AtomicLong(0);
 		recordsWritingCount = new AtomicLong(0);
 		photoWritingCount = new AtomicLong(0);
-		selfIncreament = new AtomicLong(0);
+		idColumnValue = new AtomicLong(0);
 		startDateTime = LocalDateTime.now();
 		errors = new HashMap<String,String>();
 	}
@@ -103,11 +103,11 @@ public class Status {
 	public void setTheLastDateTimeGenerated(LocalDateTime theLastDateTimeGenerated) {
 		this.theLastDateTimeGenerated = theLastDateTimeGenerated;
 	}
-	public AtomicLong getSelfIncreament() {
-		return selfIncreament;
+	public AtomicLong getIdColumnValue() {
+		return idColumnValue;
 	}
-	public long addSelfIncrementAndGet() {
-		return selfIncreament.addAndGet(1);
+	public long addIdColumnValueAndGet() {
+		return idColumnValue.addAndGet(1);
 	}
 	public Map<String,String> getErrors() {
 		return Collections.unmodifiableMap(errors);

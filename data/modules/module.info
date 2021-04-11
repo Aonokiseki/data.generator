@@ -1,0 +1,137 @@
+#注意, 这个文件仅说明属性使用方法, 不是模板文件
+
+{
+    #全局配置
+    "globalVariables" : {
+        
+        #全局日期, 当DATE类型字段没有赋值时使用
+        "startDateTime" : "2020/03/31 00:00:00",
+        "endDateTime" : "2020/05/31 23:59:59",
+        
+        #全局数值, 当NUMBER类型字段没有赋值时使用
+        "minNumber" : "0",
+        "maxNumber" : "100",
+        
+        #指定一个DATE类型字段, 令这个字段的值每条记录仅生成一个, 每次都是上一条记录的下一个日期
+        #如果达到终止日期则回到起始日期继续生成
+        "columnValueCycle" : "date2",
+
+        #指定一个NUMBER类型字段, 作为记录的ID字段
+        "idColumn" : "id",
+
+        #文本库的地址
+        "textsDirectory" : "G:/data.generator/data/texts",
+
+        #仅trs格式文件有效, 在每一行前追加额外符号
+        "linePrefix" : "",
+
+        #生成图片时使用的字体和式样
+        "font" : {
+            "name" : "微软雅黑",
+            "size" : "16",
+            "type" : "1"
+        }
+    },
+
+    #字段列表
+    "columns" : [
+        {
+            #名称
+            "name" : "char",
+            
+            #类型: 可选格式为CHAR|NUMBER|DATETIME|FULLTEXT|BINARY|OBJECT, 大小写不敏感
+            "type" : "CHAR",
+            
+            #字段属性
+            #CHAR类型的可选属性有 
+            #① text.value.type, 可选值为idcardnumber|name|uid|ip, 大小写不敏感
+            #② value.count 值数量, 小于1时为1
+            
+            "properties" : {
+                "text.value.type" : "uid"
+            }
+        },
+        {
+            #注意这个字段在全局配置中被指定为id字段, 则无需指定任何属性(忽略所有字段属性)
+            "name" : "id",
+            "type" : "NUMBER"
+        },
+        {
+            "name" : "number",
+            "type" : "NUMBER",
+            
+            #NUMBER类型的可选属性有
+            #① is.float 是否为浮点数, true|false
+            #② value.count 值数量, 小于1时为1
+            #③ min.value 最小值, 不存在时使用全局变量的对应值
+            #④ max.value 最大值, 不存在时使用全局变量的对应值
+            # 最大值如果比最小值小, 自动交换
+            
+            "properties" : {
+                "is.float" : "false",
+                "value.count" : "1"
+            }
+        },
+        {
+            "name" : "date",
+            "type" : "DATETIME",
+            
+            #DATETIME可选属性有
+            #① start.datetime 局部起始日期
+            #② end.datetime 局部结束日期
+            #P.S. 优先使用局部日期, 如果没有提供(起始或结束)日期, 则使用对应的全局变量的值, 最后再检查起止日期是否有序, 无序则交换
+            #④ value.count 值数量, 小于1时为1。若字段被设置了columnValueCycle, 则此属性被屏蔽
+            
+            "properties" : {
+                "end.datetime" : "2019/12/31 23:59:59",
+                "cycle.generate" : "true",
+                "value.count" : "1"
+            }
+        },
+		{
+			"name" : "phrase",
+			"type" : "FULLTEXT",
+           
+            # FULLTEXT 的可选属性有
+            #
+            # ① text.value.type, 可选值idcardnumber|name|library|summary|uid|ip
+            # 说明
+            #   1.library 表示从文本库中挑选一篇文本当作字段值, summary 则在此基础上做了一次摘要抽取
+            #   2.text.value.type = summary 和 summary.source.column 没关系, 后者需要提供一个FULLTEXT字段作为值的来源;前者则是先从文本库中取出一篇文本, 然后再抽取出摘要并舍弃源文本
+            # 
+            # ② summary.source.column 指定一个FULLTEXT字段, 生成该字段的摘要文本;
+            # 有该属性的字段在生成值的阶段会直接跳过(相当于屏蔽了text.value.type), 等到生成摘要时才处理, 因此指定自己生成空串
+			
+            "properties" : {
+				"text.value.type" : "summary",
+				"summary.source.column" : "document"
+			}
+		},
+		{
+			"name" : "document",
+			"type" : "FULLTEXT",
+			"properties" : {
+				"text.value.type" : "library"
+			}
+		},
+		{
+            "name" : "bit",
+            "type" : "BINARY",
+
+            # BINARY 可选属性有
+            # text.value.type, 生成图片时的文本来源
+            # value.count 单条记录生成的图片数量
+
+            "properties" : {
+                "text.value.type" : "library"
+            }
+        },
+
+        # OBJECT 字段没有任何属性, 需要使用者自行实现 priv.azure.miracle.data.generator.pojo.IObjectColumn 接口,
+        # 并在 priv.azure.miracle.bean.management.objectColumn() 完成注册
+        {
+            "name" : "object",
+            "type" : "OBJECT"
+        }
+    ]
+}

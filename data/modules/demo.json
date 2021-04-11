@@ -4,8 +4,8 @@
         "endDateTime" : "2020/05/31 23:59:59",
         "minNumber" : "0",
         "maxNumber" : "100",
-        "columnValueCycle" : "date2",
-        "selfIncreamentColumn" : "id",
+        "idColumn" : "id",
+        "columnValueCycle" : "date",
         "textsDirectory" : "G:/data.generator/data/texts",
         "linePrefix" : "",
         "font" : {
@@ -39,16 +39,7 @@
             "type" : "DATETIME",
             "properties" : {
                 "end.datetime" : "2019/12/31 23:59:59",
-                "cycle.generate" : "true",
                 "value.count" : "1"
-            }
-        },
-        {
-            "name" : "date2",
-            "type" : "DATETIME",
-            "properties" : {
-                "start.datetime" : "2001/01/01 00:00:00",
-                "end.datetime" : "2019/12/31 00:00:00"
             }
         },
 		{
@@ -59,13 +50,6 @@
 				"summary.source.column" : "document"
 			}
 		},
-		{
-            "name" : "phrase2",
-            "type" : "FULLTEXT",
-            "properties" : {
-                "summary.source.column" : "phrase"
-            }
-        },
 		{
 			"name" : "document",
 			"type" : "FULLTEXT",
